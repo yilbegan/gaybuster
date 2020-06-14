@@ -9,6 +9,7 @@ ADD ./poetry.lock /telegram/
 WORKDIR /telegram/
 
 RUN apk add build-base
+RUN apk add libjpeg zlib libtiff libfreetype littlecms libwebp openjpeg libimagequant libraqm libxcb
 RUN poetry config virtualenvs.create false && poetry install
 
 ADD ./jetbrains-mono.ttf /telegram/
