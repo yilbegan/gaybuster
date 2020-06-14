@@ -23,6 +23,8 @@ services:
       TELEGRAM_TOKEN: "1267664941:AAHSehVcBdjTPiIjVtnxgxiMnn9f1hqlKyw"
       GAYBUSTER_URL: "http://api/detect/"
 
+    command: "python -m app"
+
   rabbit:
     image: rabbitmq:3.8.2
 
