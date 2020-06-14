@@ -9,6 +9,7 @@ async def cmd_start(message: types.Message):
     await message.answer(
         (
             "Привет, {user}!\n"
-            "Отправь мне фографию, и я скажу, насколько люди на ней пидоры."
+            "Отправь мне фографию, и я скажу, насколько люди на ней пидоры.\n\n"
+            "Сайт гейдетектора: gaydetector.bitcoin5000.org"
         ).format(user=message.from_user.full_name)
     )

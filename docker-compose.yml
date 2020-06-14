@@ -20,7 +20,7 @@ services:
       dockerfile: Dockerfile
 
     environment:
-      TELEGRAM_TOKEN: "1267664941:AAHSehVcBdjTPiIjVtnxgxiMnn9f1hqlKyw"
+      TELEGRAM_TOKEN: "1254301929:AAHt7tN4ZJrv6-wH7kS5kA1Rcw-G3SM4EXI"
       GAYBUSTER_API_URL: "http://api/detect/"
 
     command: "python -m app"
