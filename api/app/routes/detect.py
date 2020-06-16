@@ -49,5 +49,7 @@ async def detect_gay(
             detail="Gay Detection worker was not send response. Try again later."
         )
 
+    # TODO: Channel pool
+    await channel.close()
     data = ujson.loads(answer.body.decode("utf-8"))
     return DetectionResponse(count=len(data), faces=data)

@@ -1,5 +1,5 @@
 import asyncio
-import time
+import tenacity
 
 import aio_pika
 
@@ -22,6 +22,7 @@ async def get_rabbit_connection():
             await asyncio.sleep(1)
 
 
+@tenacity.retry(wait=5)
 async def main():
     logger.info('Consuming events from "recognize_photos"')
     connection = await get_rabbit_connection()
@@ -29,21 +30,21 @@ async def main():
     async with connection:
         channel = await connection.channel()
 
-    queue = await channel.declare_queue("recognize_photos")
-    vgg_face = get_vgg_face()
-    classifier_model = get_classifier_model()
-    face_detector = get_face_detector()
+        queue = await channel.declare_queue("recognize_photos")
+        vgg_face = get_vgg_face()
+        classifier_model = get_classifier_model()
+        face_detector = get_face_detector()
 
-    async with queue.iterator() as queue_iter:
-        async for message in queue_iter:
-            message: aio_pika.IncomingMessage
-            try:
-                await process_photo(
-                    channel,
-                    message, vgg_face, classifier_model, face_detector
-                )
-            except Exception:  # noqa
-                logger.exception('Image processing error')
+        async with queue.iterator() as queue_iter:
+            async for message in queue_iter:
+                message: aio_pika.IncomingMessage
+                try:
+                    await process_photo(
+                        channel,
+                        message, vgg_face, classifier_model, face_detector
+                    )
+                except Exception:  # noqa
+                    logger.exception('Image processing error')
 
 
 async def process_photo(
@@ -52,18 +53,18 @@ async def process_photo(
     async with message.process():
         task = json.loads(message.body)
         image, resizing_ratio = load_image(
-            image_encoded=task["data"].get("image"),
-            image_url=task["data"].get("image_url"),
+            image_encoded=task.get("image"),
+            image_url=task.get("image_url"),
         )
 
         result = process_image(image, face_detector, classifier, vgg_face, resizing_ratio)
         await channel.default_exchange.publish(
             aio_pika.Message(body=json.dumps(result).encode('utf-8')),
-            routing_key=task["data"]["response_queue"],
+            routing_key=task["response_queue"],
         )
 
         logger.info(
-            f'Processed {task["data"]["response_queue"]} '
+            f'Processed {task["response_queue"]} '
             f'from {"url" if task.get("url") is not None else "file"} '
             f'[resized by {round(resizing_ratio)}]'
         )
