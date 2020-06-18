@@ -34,3 +34,4 @@ services:
 
     ports:
       - 5672:5672
+
