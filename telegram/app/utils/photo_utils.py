@@ -1,3 +1,5 @@
+import random
+
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 from typing import List, Union
@@ -9,6 +11,14 @@ def prepare_photo(image_data: Union[bytes, BytesIO], faces: List[dict]) -> Bytes
     if isinstance(image_data, bytes):
         image_data = BytesIO(image_data)
     image = Image.open(image_data)
+
+    watermark_size = image.size[0] // 6, image.size[1] // 6
+    position = random.choice(0, image.size[0] - watermark_size[0]), \
+        random.choice(0, image.size[1] - watermark_size[1])
+    watermark = Image.open('./watermark.png')
+    watermark.thumbnail(watermark_size, Image.ANTIALIAS)
+    image = Image.alpha_composite(image, watermark)
+
     draw = ImageDraw.Draw(image)
 
     for face in faces:
