@@ -20,4 +20,5 @@ RUN apk add jpeg-dev zlib-dev freetype-dev \
 RUN poetry config virtualenvs.create false && poetry install
 
 ADD ./jetbrains-mono.ttf /telegram/
+ADD ./watermark.png /telegram/
 ADD ./app /telegram/app/
