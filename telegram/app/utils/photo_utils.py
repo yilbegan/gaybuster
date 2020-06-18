@@ -17,7 +17,6 @@ def prepare_photo(image_data: Union[bytes, BytesIO], faces: List[dict]) -> Bytes
         random.randint(0, image.size[1] - watermark_size[1])
     watermark = Image.open('./watermark.png')
     watermark.thumbnail(watermark_size, Image.ANTIALIAS)
-    watermark.putalpha(128)
     image.paste(watermark, watermark_position, watermark)
 
     draw = ImageDraw.Draw(image)

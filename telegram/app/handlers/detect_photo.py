@@ -23,7 +23,7 @@ async def detect_photo(message: types.Message):
     photo_data = photo.read()
     photo.seek(0)
     async with ClientSession() as session:
-        async with session.post(config.GAYBUSTER_API_URL, data={'photo': photo}) as request:  # type: ClientResponse
+        async with session.post(config.GAYBUSTER_API_URL, data={'photo': photo}, timeout=45) as request:  # type: ClientResponse
             if request.status >= 400:
                 await message.answer('Не удалось распознать фото. Попробуйте позже.')
                 return
