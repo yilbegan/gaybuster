@@ -11,6 +11,17 @@ pycares = ">=3.0.0"
 
 [[package]]
 category = "main"
+description = "Asynchronous file operations."
+name = "aiofile"
+optional = false
+python-versions = "*"
+version = "1.5.2"
+
+[package.extras]
+develop = ["cython", "pytest (4.0.2)", "pytest-asyncio (>=0.9.0,<0.10.0)", "pytest-cov"]
+
+[[package]]
+category = "main"
 description = "Is a pretty simple and fully asynchronous framework for Telegram Bot API"
 name = "aiogram"
 optional = false
@@ -325,13 +336,22 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "f6714fa9413e4c1fad574b03d2a65a54fd4560ff453dd990124c156e1cb69d19"
+content-hash = "f550d1b636237d50b8ee580e65c6d9f7211ec4814a6e673dfed1792a7ff05ed7"
 python-versions = "^3.7"
 
 [metadata.files]
 aiodns = [
     {file = "aiodns-2.0.0-py2.py3-none-any.whl", hash = "sha256:aaa5ac584f40fe778013df0aa6544bf157799bd3f608364b451840ed2c8688de"},
     {file = "aiodns-2.0.0.tar.gz", hash = "sha256:815fdef4607474295d68da46978a54481dd1e7be153c7d60f9e72773cd38d77d"},
+]
+aiofile = [
+    {file = "aiofile-1.5.2-cp34-cp34m-macosx_10_6_intel.whl", hash = "sha256:cef9e7bdf93db6a4c7ffe9ef0c354e2887695ec2a3a9dda8ed285005ec835616"},
+    {file = "aiofile-1.5.2-cp35-cp35m-macosx_10_6_intel.whl", hash = "sha256:e43cb5e3181a8dfb73afbb4749b024e9a35a52e60ecf97d1d3db2731212cb0a0"},
+    {file = "aiofile-1.5.2-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:a9a457654e561c396b88f70a0d5fa00e40a337853aa180bc805d9d5efb82317c"},
+    {file = "aiofile-1.5.2-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:8c50fcb42ee2bad2ae811edb972724e7f6bf3b0a6565a498f2432862b548b92d"},
+    {file = "aiofile-1.5.2-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:d1da2fc9aa7509d29ea09617bf533bd1045f79cfdfb10ee83da90ba2212720a2"},
+    {file = "aiofile-1.5.2-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:312d50ed7e646a40ab2a5457fdf382870aca926f956921ab8c7ab72c3922f372"},
+    {file = "aiofile-1.5.2.tar.gz", hash = "sha256:229078abbaab87adfcaad0fa7766b9b8251d42d0242deac6166da433b027ef1f"},
 ]
 aiogram = [
     {file = "aiogram-2.9-py3-none-any.whl", hash = "sha256:684d3bb5b71808dc50319cd71dfe7820680bf9f27b13db7188975dd3b5254101"},

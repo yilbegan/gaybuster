@@ -25,6 +25,9 @@ services:
 
     command: "python -m app"
 
+    volumes:
+      ./data/telegram_detections/:/detections/
+
   rabbit:
     image: rabbitmq:3.8.2
 

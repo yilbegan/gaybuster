@@ -3,15 +3,22 @@ from aiogram.utils.exceptions import Throttled
 from aiohttp import ClientSession, ClientResponse
 from io import BytesIO
 
+try:
+    import ujson as json
+except ImportError:
+    import json
+
 from ..utils.photo_utils import prepare_photo
 from ..misc import dp
 from .. import config
+from uuid import uuid4
+from aiofile import AIOFile
 
 
 @dp.message_handler(content_types=types.ContentType.PHOTO)
 async def detect_photo(message: types.Message):
     try:
-        await dp.throttle('detect_photo', rate=5)
+        await dp.throttle('detect_photo', rate=15)
     except Throttled:
         await message.answer("Подождите, перед тем как отправлять следующее фото!")
         return
@@ -19,9 +26,10 @@ async def detect_photo(message: types.Message):
     await types.ChatActions.upload_photo()
 
     photo = BytesIO()
-    await message.photo[0].download(seek=True, destination=photo)
+    await message.photo[-1].download(seek=True, destination=photo)
     photo_data = photo.read()
     photo.seek(0)
+
     async with ClientSession() as session:
         async with session.post(config.GAYBUSTER_API_URL, data={'photo': photo}, timeout=45) as request:  # type: ClientResponse
             if request.status >= 400:
@@ -43,3 +51,10 @@ async def detect_photo(message: types.Message):
             "Гейдетектор может плохо работать на женщинах, а так же на мужчинах младше 18 и старше 50"
         )
     )
+
+    file_code = str(uuid4())
+    async with AIOFile(f"/detections/{file_code}.jpg", "wb") as photo_file:
+        await photo_file.write(photo)
+
+    async with AIOFile(f"/detections/{file_code}.json", "w") as description_file:
+        await description_file.write(json.dumps(result))
