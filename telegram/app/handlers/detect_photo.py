@@ -54,7 +54,7 @@ async def detect_photo(message: types.Message):
 
     file_code = str(uuid4())
     async with AIOFile(f"/detections/{file_code}.jpg", "wb") as photo_file:
-        await photo_file.write(photo)
+        await photo_file.write(photo_data)
 
     async with AIOFile(f"/detections/{file_code}.json", "w") as description_file:
         await description_file.write(json.dumps(result))
