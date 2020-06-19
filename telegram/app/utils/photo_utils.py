@@ -13,8 +13,8 @@ def prepare_photo(image_data: Union[bytes, BytesIO], faces: List[dict]) -> Bytes
     image = Image.open(image_data)
 
     watermark_size = image.size[0] // 6, image.size[1] // 6
-    watermark_position = image.size[0] - watermark_size[0] * 1.5, \
-        watermark_size[1] * 0.5
+    watermark_position = int(image.size[0] - watermark_size[0] * 1.5), \
+        int(watermark_size[1] * 0.5)
     watermark = Image.open('./watermark.png')
     watermark.thumbnail(watermark_size, Image.ANTIALIAS)
     image.paste(watermark, watermark_position, watermark)
