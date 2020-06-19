@@ -2,6 +2,7 @@ from aiogram import types
 from aiogram.utils.exceptions import Throttled
 from aiohttp import ClientSession, ClientResponse
 from io import BytesIO
+from html import escape
 
 try:
     import ujson as json
@@ -18,10 +19,17 @@ from aiofile import AIOFile
 @dp.message_handler(content_types=types.ContentType.PHOTO)
 async def detect_photo(message: types.Message):
     try:
-        await dp.throttle('detect_photo', rate=15)
+        await dp.throttle('detect_photo', rate=185)
     except Throttled:
-        await message.answer("Подождите, перед тем как отправлять следующее фото!")
+        await message.answer("Подождите пару минут, перед тем как отправлять следующее фото!")
         return
+
+    await message.answer(
+        "Подписывайтесь на {group_link}! Поддержите прорывную отечественную разработку донатом!"
+        .format(
+            group_link=f'<a href="{escape("https://vk.com/partiarobotov")}">ПАРТИЮ</a>',
+        )
+    )
 
     await types.ChatActions.upload_photo()
 
@@ -31,7 +39,7 @@ async def detect_photo(message: types.Message):
     photo.seek(0)
 
     async with ClientSession() as session:
-        async with session.post(config.GAYBUSTER_API_URL, data={'photo': photo}, timeout=45) as request:  # type: ClientResponse
+        async with session.post(config.GAYBUSTER_API_URL, data={'photo': photo}, timeout=185) as request:  # type: ClientResponse
             if request.status >= 400:
                 await message.answer('Не удалось распознать фото. Попробуйте позже.')
                 return

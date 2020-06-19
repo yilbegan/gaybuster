@@ -10,7 +10,7 @@ from .models import DetectionResponse
 from ..rabbitmq import depends_rabbit
 
 router = APIRouter()
-TIMEOUT = 40
+TIMEOUT = 180
 
 
 @router.post('/', response_model=DetectionResponse)
