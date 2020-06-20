@@ -5,7 +5,9 @@ from . import config
 
 __all__ = ("bot", "dp", "executor", "setup")
 
-bot = Bot(config.TELEGRAM_TOKEN, parse_mode=types.ParseMode.HTML, proxy=config.PROXY_URL)
+bot = Bot(
+    config.TELEGRAM_TOKEN, parse_mode=types.ParseMode.HTML, proxy=config.PROXY_URL
+)
 dp = Dispatcher(bot, storage=MemoryStorage())
 executor = Executor(dp, skip_updates=True)
 

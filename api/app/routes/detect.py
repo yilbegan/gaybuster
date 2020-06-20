@@ -32,13 +32,14 @@ async def detect_gay(
                     "image": base64.urlsafe_b64encode(await photo.read()).decode('utf-8'),
                     "response_queue": response_queue,
                 }
-            ).encode("utf-8")
+            ).encode("utf-8"),
+            expiration=TIMEOUT
         ),
         routing_key="recognize_photos",
     )
 
     for i in range(TIMEOUT * 2):
-        answer = await queue.get(no_ack=True, fail=False)
+        answer = await queue.get(fail=False)
         if answer is not None:
             break
         await asyncio.sleep(0.5)

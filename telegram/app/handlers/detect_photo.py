@@ -1,3 +1,5 @@
+import random
+
 from aiogram import types
 from aiogram.utils.exceptions import Throttled
 from aiohttp import ClientSession, ClientResponse
@@ -19,17 +21,23 @@ from aiofile import AIOFile
 @dp.message_handler(content_types=types.ContentType.PHOTO)
 async def detect_photo(message: types.Message):
     try:
-        await dp.throttle('detect_photo', rate=185)
+        await dp.throttle("detect_photo", rate=185)
     except Throttled:
-        await message.answer("Подождите пару минут, перед тем как отправлять следующее фото!")
+        await message.answer(
+            "Подождите пару минут, перед тем как отправлять следующее фото!"
+        )
         return
 
-    await message.answer(
-        "Подписывайтесь на {group_link}! Поддержите прорывную отечественную разработку донатом!"
-        .format(
-            group_link=f'<a href="{escape("https://vk.com/partiarobotov")}">ПАРТИЮ</a>',
+    if random.randint(0, 3) == 2:
+        await message.answer(
+            "Подписывайтесь на {partia}, {vera} и {anti}!\n"
+            "Поддержите отечественную разработку {donate}!".format(
+                partia=f'<a href="{escape("https://vk.com/partiarobotov")}">ПАРТИЮ</a>',
+                vera=f'<a href="{escape("https://vk.com/the_biboran")}">Абдуловеру</a>',
+                anti=f'<a href="{escape("https://vk.com/antibezpredel")}">Антибеспредел</a>',
+                donate=f'<a href="{escape("http://donatepay.ru/d/vnukelkina")}">донатом</a>',
+            )
         )
-    )
 
     await types.ChatActions.upload_photo()
 
@@ -39,17 +47,21 @@ async def detect_photo(message: types.Message):
     photo.seek(0)
 
     async with ClientSession() as session:
-        async with session.post(config.GAYBUSTER_API_URL, data={'photo': photo}, timeout=185) as request:  # type: ClientResponse
+        async with session.post(
+            config.GAYBUSTER_API_URL, data={"photo": photo}, timeout=185
+        ) as request:  # type: ClientResponse
             if request.status >= 400:
-                await message.answer('Не удалось распознать фото. Попробуйте позже.')
+                await message.answer("Не удалось распознать фото. Попробуйте позже.")
                 return
             result = await request.json()
 
-    if result['count'] == 0:
-        await message.answer('Лица на фото не найдены, попробуйте другой ракурс.')
+    if result["count"] == 0:
+        await message.answer("Лица на фото не найдены, попробуйте другой ракурс.")
         return
 
-    prepared_photo = await dp.loop.run_in_executor(dp['process_pool_executor'], prepare_photo, photo_data, result['faces'])
+    prepared_photo = await dp.loop.run_in_executor(
+        dp["process_pool_executor"], prepare_photo, photo_data, result["faces"]
+    )
     await message.answer_photo(
         prepared_photo,
         caption=(
@@ -57,7 +69,7 @@ async def detect_photo(message: types.Message):
             "📙 - Недостаточная точность\n"
             "📗 - Скорее всего не гей\n\n"
             "Гейдетектор может плохо работать на женщинах, а так же на мужчинах младше 18 и старше 50"
-        )
+        ),
     )
 
     file_code = str(uuid4())

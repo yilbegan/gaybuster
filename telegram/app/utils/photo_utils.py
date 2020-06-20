@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 from typing import List, Union
 
-__all__ = ('prepare_photo',)
+__all__ = ("prepare_photo",)
 
 
 def prepare_photo(image_data: Union[bytes, BytesIO], faces: List[dict]) -> BytesIO:
@@ -13,10 +13,12 @@ def prepare_photo(image_data: Union[bytes, BytesIO], faces: List[dict]) -> Bytes
     image = Image.open(image_data)
 
     watermark_size = image.size[0] // 6, image.size[1] // 6
-    watermark = Image.open('./watermark.png')
+    watermark = Image.open("./watermark.png")
     watermark.thumbnail(watermark_size, Image.ANTIALIAS)
-    watermark_position = int(watermark.size[0] * 0.5), \
-        int(image.size[1] - watermark.size[1] * 1.5)
+    watermark_position = (
+        int(watermark.size[0] * 0.5),
+        int(image.size[1] - watermark.size[1] * 1.5),
+    )
     image.paste(watermark, watermark_position, watermark)
 
     draw = ImageDraw.Draw(image)
@@ -64,9 +66,7 @@ def prepare_photo(image_data: Union[bytes, BytesIO], faces: List[dict]) -> Bytes
             (cords[0] + int(description_size[0] * 1.1), cords[1]),
         )
 
-        draw.rectangle(
-            label_cords, fill=color
-        )
+        draw.rectangle(label_cords, fill=color)
 
         draw.text(
             (
@@ -78,6 +78,6 @@ def prepare_photo(image_data: Union[bytes, BytesIO], faces: List[dict]) -> Bytes
         )
 
     result = BytesIO()
-    image.save(result, format='PNG')
+    image.save(result, format="PNG")
     result.seek(0)
     return result
