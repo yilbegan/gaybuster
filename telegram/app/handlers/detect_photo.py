@@ -21,7 +21,7 @@ from aiofile import AIOFile
 @dp.message_handler(content_types=types.ContentType.PHOTO)
 async def detect_photo(message: types.Message):
     try:
-        await dp.throttle("detect_photo", rate=185)
+        await dp.throttle("detect_photo", rate=30)
     except Throttled:
         await message.answer(
             "Подождите пару минут, перед тем как отправлять следующее фото!"
