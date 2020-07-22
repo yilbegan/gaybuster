@@ -22,6 +22,7 @@ services:
     environment:
       TELEGRAM_TOKEN: "1254301929:AAHt7tN4ZJrv6-wH7kS5kA1Rcw-G3SM4EXI"
       GAYBUSTER_API_URL: "http://api/detect/"
+      POSTGRES_CONNECTION_URI: 'postgres://postgres:root@database:5432/gaybuster'
 
     command: "python -m app"
 
@@ -38,3 +39,14 @@ services:
     ports:
       - 5672:5672
 
+  database:
+    image: postgres:12.1-alpine
+
+    environment:
+      POSTGRES_PASSWORD: root
+
+    volumes:
+      - ./data/pgdata:/var/lib/postgresql/data
+
+    ports:
+      - 5432:5432
