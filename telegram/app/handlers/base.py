@@ -46,7 +46,7 @@ async def create_token_step_2(message: types.Message, state: FSMContext):
 
     new_token = Token(usages=int(message.text))
     await new_token.save()
-    await message.answer(f"Создан токен на {message.text} использований: <code>{new_token}</code>")
+    await message.answer(f"Создан токен на {message.text} использований: <code>{new_token.token}</code>")
     await state.finish()
 
 
