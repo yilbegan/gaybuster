@@ -44,6 +44,7 @@ services:
 
     environment:
       POSTGRES_PASSWORD: root
+      POSTGRES_DB: gaybuster
 
     volumes:
       - ./data/pgdata:/var/lib/postgresql/data
