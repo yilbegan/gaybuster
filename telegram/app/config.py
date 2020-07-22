@@ -9,3 +9,4 @@ GAYBUSTER_API_URL: str = env.str(
 )
 MAX_WORKERS: int = env.int("MAX_WORKERS", default=1)
 PROXY_URL: Optional[str] = env.str("PROXY_URL", default=None)
+POSTGRES_CONNECTION_URI: str = env.str("POSTGRES_CONNECTION_URI")

@@ -11,6 +11,8 @@ aiohttp = {extras = ["speedups"], version = "^3.6.2"}
 environs = "^8.0.0"
 Pillow = "^7.1.2"
 aiofile = "^1.5.2"
+tortoise-orm = "^0.16.13"
+asyncpg = "^0.20.1"
 
 [tool.poetry.dev-dependencies]
 black = "^19.10b0"

@@ -15,8 +15,10 @@ executor = Executor(dp, skip_updates=True)
 def setup():
     from . import startup
 
-    executor.on_startup(startup.init_process_pool, polling=True)
+    executor.on_startup(startup.init_process_pool)
+    executor.on_startup(startup.init_postgres)
     executor.on_shutdown(startup.close_process_pool)
+    executor.on_shutdown(startup.close_postgres)
 
     # noinspection PyUnresolvedReferences
     import app.handlers
