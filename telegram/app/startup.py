@@ -4,6 +4,7 @@ import asyncio
 from aiogram import Dispatcher
 from concurrent.futures import ProcessPoolExecutor
 from tortoise import Tortoise
+from tortoise.exceptions import DBConnectionError
 
 from . import config
 
@@ -23,7 +24,7 @@ async def init_postgres(dp: Dispatcher):
                 db_url=config.POSTGRES_CONNECTION_URI, modules={"models": ["app.db"]}
             )
             break
-        except (ConnectionRefusedError, asyncpg.CannotConnectNowError):
+        except (ConnectionRefusedError, asyncpg.CannotConnectNowError, DBConnectionError):
             await asyncio.sleep(1)
     await Tortoise.generate_schemas()
 
