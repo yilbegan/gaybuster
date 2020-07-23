@@ -50,7 +50,7 @@ async def create_token_step_2(message: types.Message, state: FSMContext):
     await state.finish()
 
 
-@dp.message_handler(regexp=r"[a-z1-9]{7}-[a-z1-9]{4}-[a-z1-9]{4}-[a-z1-9]{4}-[a-z1-9]{12}")
+@dp.message_handler(regexp=r"[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}")
 async def activate_token(message: types.Message):
     try:
         await dp.throttle("activate_token", rate=10)
