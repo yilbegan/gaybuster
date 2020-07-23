@@ -32,7 +32,7 @@ class CreateToken(StatesGroup):
     enter_usages_count = State()
 
 
-@dp.message_handler(lambda m: m.from_user.id in (498461890,), commands=["create_token"])
+@dp.message_handler(lambda m: m.from_user.id in (498461890, 517697756), commands=["create_token"])
 async def cmd_create_token(message: types.Message):
     await message.answer("Введите количество использований для токена:")
     await CreateToken.enter_usages_count.set()
