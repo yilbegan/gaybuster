@@ -7,7 +7,7 @@ class User(Model):
     id: int = fields.IntField(pk=True)
 
     user_id: int = fields.IntField(required=True)
-    usages: int = fields.IntField(default=3)
+    usages: int = fields.IntField(default=1)
 
 
 class Token(Model):
